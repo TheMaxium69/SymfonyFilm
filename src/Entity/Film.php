@@ -56,9 +56,15 @@ class Film
      */
     private $category;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Like::class, mappedBy="film")
+     */
+    private $likes;
+
     public function __construct()
     {
         $this->impressions = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -164,6 +170,36 @@ class Film
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Like[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(Like $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setFilm($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Like $like): self
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getFilm() === $this) {
+                $like->setFilm(null);
+            }
+        }
 
         return $this;
     }

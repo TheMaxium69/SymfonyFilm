@@ -18,9 +18,11 @@
                 <p class="card-text">{{ OneFilm.category.name }} </p>
                 <p class="card-text">{{ OneFilm.releaseDate | date('d M Y') }} </p>
                 <p class="card-text">{{ OneFilm.user.username }} </p>
+                <p class="card-text">{{ OneFilm.likes | length }} Like</p>
                 {% if app.user == OneFilm.user %}
                 <a href="{{ path("delFilm",{id:OneFilm.id}) }}" class="btn btn-danger">Supprimer</a>
                 <a href="{{ path("editFilm",{id:OneFilm.id}) }}" class="btn btn-info">Edit</a>
+                <a href="{{ path("like",{id:OneFilm.id}) }}" class="btn btn-warning">Like</a>
                 {% endif %}
                 <a href="{{ path("showFilm",{id:OneFilm.id}) }}" class="btn btn-primary">Voir les details</a>
             </div>

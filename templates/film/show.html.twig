@@ -14,6 +14,10 @@
                     <p class="card-text">{{ showFilm.category.name }} </p>
                     <p class="card-text">{{ showFilm.releaseDate | date('d M Y') }} </p>
                     <p class="card-text">{{ showFilm.user.username }} </p>
+                    <p class="card-text">{{ showFilm.likes | length }} Like</p>
+                    {% if app.user %}
+                    <a href="{{ path("like",{id:showFilm.id}) }}" class="btn btn-warning">Like</a>
+                    {% endif %}
                     {% if app.user == showFilm.user %}
                     <a href="{{ path("editFilm",{id:showFilm.id}) }}" class="btn btn-info">Edit</a>
                     <a href="{{ path("delFilm",{id:showFilm.id}) }}" class="btn btn-danger">Supprimer</a>
@@ -23,7 +27,7 @@
 <hr>
     <h3>Les impresions</h3>
     {% if app.user %}
-    <a href="{{ path("createImp",{id:showFilm.id}) }}" class="btn btn-warning">Donné son avie</a>
+    <a href="{{ path("createImp",{id:showFilm.id}) }}" class="btn btn-dark">Donné son avie</a>
     {% endif %}
     <div class="row">
         {% for OneImpression in AllImpressions %}
@@ -32,6 +36,10 @@
                     <p class="card-text">{{ OneImpression.content }}</p>
                     <p class="card-text">{{ OneImpression.createdAt | date('d M Y') }} </p>
                     <p class="card-text">{{ OneImpression.user.username }} </p>
+                    <p class="card-text">{{ OneImpression.likes | length }} Like</p>
+                    {% if app.user %}
+                    <a href="{{ path("likeImp",{id:OneImpression.id}) }}" class="btn btn-warning">Like</a>
+                    {% endif %}
                     {% if app.user == OneImpression.user %}
                     <a href="{{ path("delImp",{id:OneImpression.id}) }}" class="btn btn-danger">Supprimer</a>
                     <a href="{{ path("editImp",{id:OneImpression.id}) }}" class="btn btn-info">Edit</a>

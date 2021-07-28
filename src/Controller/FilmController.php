@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Film;
 use App\Entity\Impression;
+use App\Entity\Like;
 use App\Form\FilmType;
 use App\Form\ImpressionType;
 use App\Repository\FilmRepository;
@@ -12,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class FilmController extends AbstractController
 {
@@ -188,5 +190,69 @@ class FilmController extends AbstractController
         }
 
     }
+
+    /**
+     * @Route("/film/likefilm/{id}", name="like")
+     */
+    public function like(Film $film, EntityManagerInterface $manager, UserInterface $user): Response
+    {
+        $user = $this->getUser();
+        if (!$user){
+            die("tu dois etre connecter");
+        }
+        $likesUser = $user->getLikes();
+
+        $isLike = false;
+        foreach ($likesUser as $likeUser) {
+            $filmDuLike = $likeUser->getFilm();
+            if($filmDuLike == $film){
+                $isLike = true;
+                $manager->remove($likeUser);
+            }
+        }
+        if (!$isLike) {
+            $like = new Like();
+            $like->setFilm($film);
+            $like->setUser($user);
+            $manager->persist($like);
+        }
+        $manager->flush();
+
+        return $this->redirectToRoute('indexFilm');
+    }
+
+    /**
+     * @Route("/film/likeimp/{id}", name="likeImp")
+     */
+    public function likeImp(Impression $impression, EntityManagerInterface $manager, UserInterface $user): Response
+    {
+        $user = $this->getUser();
+        $film = $impression->getFilm();
+        if (!$user){
+            die("tu dois etre connecter");
+        }
+        $likesUser = $user->getLikes();
+
+        $isLike = false;
+        foreach ($likesUser as $likeUser) {
+            $ImpressionDuLike = $likeUser->getImpression();
+            if($ImpressionDuLike == $impression){
+                $isLike = true;
+                $manager->remove($likeUser);
+            }
+        }
+        if (!$isLike) {
+            $like = new Like();
+            $like->setImpression($impression);
+            $like->setUser($user);
+            $manager->persist($like);
+        }
+        $manager->flush();
+
+        return $this->redirectToRoute('showFilm', [
+            "id" => $film->getId()
+        ]);
+    }
+
 
 }
