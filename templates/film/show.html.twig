@@ -24,7 +24,7 @@
                 <div class="card-body">
                     <p class="card-text">{{ OneImpression.content }}</p>
                     <p class="card-text">{{ OneImpression.createdAt | date('d M Y') }} </p>
-{#                    <a href="{{ path("delFilm",{id:OneFilm.id}) }}" class="btn btn-danger">Supprimer</a>#}
+                    <a href="{{ path("delImp",{id:OneImpression.id}) }}" class="btn btn-danger">Supprimer</a>
 {#                    <a href="{{ path("editFilm",{id:OneFilm.id}) }}" class="btn btn-info">Edit</a>#}
                 </div>
             </div>

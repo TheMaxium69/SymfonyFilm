@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Film;
+use App\Entity\Impression;
 use App\Form\FilmType;
 use App\Repository\FilmRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,8 +32,6 @@ class FilmController extends AbstractController
     public function show(Film $film): Response
     {
         $impressions = $film->getImpressions();
-
-
 
         return $this->render('film/show.html.twig', [
             'AllImpressions' => $impressions,
@@ -84,6 +83,21 @@ class FilmController extends AbstractController
             ]);
         }
 
+    }
+
+    /**
+     * @Route("/film/imp/del/{id}", name="delImp")
+     */
+    public function delImp(Impression $impression, EntityManagerInterface $manager) : Response
+    {
+        $film = $impression->getFilm();
+
+        $manager->remove($impression);
+        $manager->flush();
+
+        return $this->redirectToRoute('showFilm', [
+            "id" => $film->getId()
+        ]);
     }
 
 }
