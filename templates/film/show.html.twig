@@ -18,6 +18,9 @@
             </div>
 <hr>
     <h3>Les impresions</h3>
+
+    <a href="{{ path("createImp",{id:showFilm.id}) }}" class="btn btn-warning">Donné son avie</a>
+
     <div class="row">
         {% for OneImpression in AllImpressions %}
             <div class="card" style="width: 18rem;">

@@ -6,13 +6,21 @@
 
 {% block body %}
 
+    {% if isCreate %}
+        <h1>Form Create</h1>
+    {% else %}
         <h1>Form Edit</h1>
+    {% endif %}
 
     {{ form_start(formImp) }}
 
     {{ form_row(formImp.content) }}
 
+    {% if isCreate %}
+        <input class="btn btn-success" type="submit" value="Créer">
+    {% else %}
         <input class="btn btn-success" type="submit" value="Edit">
+    {% endif %}
     {{ form_end(formImp) }}
 
     <hr><a href="{{ path('showFilm',{id:film.id}) }}" class="btn btn-primary">Retour</a>

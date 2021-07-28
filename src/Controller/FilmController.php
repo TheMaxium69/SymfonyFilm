@@ -104,7 +104,7 @@ class FilmController extends AbstractController
     /**
      * @Route ("/film/imp/edit/{id}", name="editImp")
      */
-    public function newImp(Impression $impression = null, Request $laRequete, EntityManagerInterface $manager) : Response
+    public function editImp(Impression $impression = null, Request $laRequete, EntityManagerInterface $manager) : Response
     {
         $form = $this->createForm(ImpressionType::class, $impression);
 
@@ -123,9 +123,42 @@ class FilmController extends AbstractController
         }else {
             return $this->render('film/imp.html.twig', [
                 'formImp' => $form->createView(),
-                'film' => $film
+                'film' => $film,
+                'isCreate' => false
             ]);
         }
+    }
+
+    /**
+     * @Route("/film/imp/create/{id}", name="createImp")
+     */
+    public function newImp(Film $film, Request $laRequete, EntityManagerInterface $manager) : Response
+    {
+        $impression = new Impression();
+
+        $form = $this->createForm(ImpressionType::class, $impression);
+
+        $form->handleRequest($laRequete);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $date = new \DateTime();
+            $impression->setFilm($film);
+            $impression->setCreatedAt($date);
+            $manager->persist($impression);
+            $manager->flush();
+
+            return $this->redirectToRoute('showFilm', [
+                "id" => $film->getId()
+            ]);
+
+        }else {
+            return $this->render('film/imp.html.twig', [
+                'formImp' => $form->createView(),
+                'film' => $film,
+                'isCreate' => true
+            ]);
+        }
+
     }
 
 }
