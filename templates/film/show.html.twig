@@ -10,6 +10,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ showFilm.name }}</h5>
                     <p class="card-text">{{ showFilm.resume }}</p>
+                    <a href="{{ path("delFilm",{id:showFilm.id}) }}" class="btn btn-danger">Supprimer</a>
                 </div>
             </div>
 {% endblock %}
