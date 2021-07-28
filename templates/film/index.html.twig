@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tout mes films!{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+    {% for OneFilm in AllFilm %}
+        <div class="card" style="width: 18rem;">
+{#            <img src="..." class="card-img-top" alt="...">#}
+            <div class="card-body">
+                <h5 class="card-title">{{ OneFilm.name }}</h5>
+                <p class="card-text">{{ OneFilm.resume }}</p>
+                <a href="{{ path("showFilm",{id:OneFilm.id}) }}" class="btn btn-primary">Voir les details</a>
+            </div>
+        </div>
+
+
+    {% endfor %}
+    </div>
+{% endblock %}
