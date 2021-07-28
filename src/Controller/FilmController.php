@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Film;
 use App\Entity\Impression;
 use App\Form\FilmType;
+use App\Form\ImpressionType;
 use App\Repository\FilmRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -98,6 +99,33 @@ class FilmController extends AbstractController
         return $this->redirectToRoute('showFilm', [
             "id" => $film->getId()
         ]);
+    }
+
+    /**
+     * @Route ("/film/imp/edit/{id}", name="editImp")
+     */
+    public function newImp(Impression $impression = null, Request $laRequete, EntityManagerInterface $manager) : Response
+    {
+        $form = $this->createForm(ImpressionType::class, $impression);
+
+        $film = $impression->getFilm();
+
+        $form->handleRequest($laRequete);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+
+            $manager->persist($impression);
+            $manager->flush();
+
+            return $this->redirectToRoute('showFilm', [
+                "id" => $film->getId()
+            ]);
+        }else {
+            return $this->render('film/imp.html.twig', [
+                'formImp' => $form->createView(),
+                'film' => $film
+            ]);
+        }
     }
 
 }

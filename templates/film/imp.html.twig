@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formulaire Impression{% endblock %}
+
+{% form_theme formImp 'bootstrap_5_layout.html.twig' %}
+
+{% block body %}
+
+        <h1>Form Edit</h1>
+
+    {{ form_start(formImp) }}
+
+    {{ form_row(formImp.content) }}
+
+        <input class="btn btn-success" type="submit" value="Edit">
+    {{ form_end(formImp) }}
+
+    <hr><a href="{{ path('showFilm',{id:film.id}) }}" class="btn btn-primary">Retour</a>
+
+{% endblock %}
