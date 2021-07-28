@@ -50,6 +50,11 @@ class User implements UserInterface
      */
     private $likes;
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $roles = [];
+
     public function __construct()
     {
         $this->films = new ArrayCollection();
@@ -100,7 +105,9 @@ class User implements UserInterface
 
     public function getRoles()
     {
-        return ["ROLE_USER"];
+        $roles = $this->roles;
+        $roles[] = "ROLE_USER";
+        return $roles;
     }
 
     public function getSalt()
@@ -210,6 +217,13 @@ class User implements UserInterface
                 $like->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function setRoles(?array $roles): self
+    {
+        $this->roles = $roles;
 
         return $this;
     }
