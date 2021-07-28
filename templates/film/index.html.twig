@@ -3,7 +3,10 @@
 {% block title %}Tout mes films!{% endblock %}
 
 {% block body %}
+
+    {% if app.user %}
 <a href="{{ path("createFilm",) }}" class="btn btn-info">Creates</a>
+    {% endif %}
     <div class="row">
     {% for OneFilm in AllFilm %}
         <div class="card" style="width: 18rem;">
@@ -13,8 +16,11 @@
                 <p class="card-text">{{ OneFilm.resume }}</p>
                 <p class="card-text">{{ OneFilm.realisateur }}</p>
                 <p class="card-text">{{ OneFilm.releaseDate | date('d M Y') }} </p>
+                <p class="card-text">{{ OneFilm.user.username }} </p>
+                {% if app.user == OneFilm.user %}
                 <a href="{{ path("delFilm",{id:OneFilm.id}) }}" class="btn btn-danger">Supprimer</a>
                 <a href="{{ path("editFilm",{id:OneFilm.id}) }}" class="btn btn-info">Edit</a>
+                {% endif %}
                 <a href="{{ path("showFilm",{id:OneFilm.id}) }}" class="btn btn-primary">Voir les details</a>
             </div>
         </div>

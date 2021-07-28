@@ -12,23 +12,29 @@
                     <p class="card-text">{{ showFilm.resume }}</p>
                     <p class="card-text">{{ showFilm.realisateur }}</p>
                     <p class="card-text">{{ showFilm.releaseDate | date('d M Y') }} </p>
+                    <p class="card-text">{{ showFilm.user.username }} </p>
+                    {% if app.user == showFilm.user %}
                     <a href="{{ path("editFilm",{id:showFilm.id}) }}" class="btn btn-info">Edit</a>
                     <a href="{{ path("delFilm",{id:showFilm.id}) }}" class="btn btn-danger">Supprimer</a>
+                    {% endif %}
                 </div>
             </div>
 <hr>
     <h3>Les impresions</h3>
-
+    {% if app.user %}
     <a href="{{ path("createImp",{id:showFilm.id}) }}" class="btn btn-warning">Donné son avie</a>
-
+    {% endif %}
     <div class="row">
         {% for OneImpression in AllImpressions %}
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
                     <p class="card-text">{{ OneImpression.content }}</p>
                     <p class="card-text">{{ OneImpression.createdAt | date('d M Y') }} </p>
+                    <p class="card-text">{{ OneImpression.user.username }} </p>
+                    {% if app.user == OneImpression.user %}
                     <a href="{{ path("delImp",{id:OneImpression.id}) }}" class="btn btn-danger">Supprimer</a>
                     <a href="{{ path("editImp",{id:OneImpression.id}) }}" class="btn btn-info">Edit</a>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}

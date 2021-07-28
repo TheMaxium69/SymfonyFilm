@@ -45,11 +45,15 @@ class FilmController extends AbstractController
      */
     public function del(Film $film, EntityManagerInterface $manager) : Response
     {
+        $user = $this->getUser();
+        if ($user == $film->getUser()) {
+            $manager->remove($film);
+            $manager->flush();
 
-        $manager->remove($film);
-        $manager->flush();
-
-        return $this->redirectToRoute('indexFilm');
+            return $this->redirectToRoute('indexFilm');
+        }else{
+            die("Tu n'est pas le créateur du film");
+        }
     }
 
     /**
@@ -58,11 +62,18 @@ class FilmController extends AbstractController
      */
     public function new(Film $film = null, Request $laRequete, EntityManagerInterface $manager) : Response
     {
+        $user = $this->getUser();
+        if (!$user){
+            die("tu dois etre connecter");
+        }
+
         $modeCreate = false;
 
         if (!$film) {
             $film = new Film();
             $modeCreate = true;
+        }else if ($user != $film->getUser()){
+            die("Tu n'est pas le créateur du film");
         }
 
         $form = $this->createForm(FilmType::class, $film);
@@ -70,6 +81,7 @@ class FilmController extends AbstractController
         $form->handleRequest($laRequete);
         if ($form->isSubmitted() && $form->isValid())
         {
+            $film->setUser($user);
 
             $manager->persist($film);
             $manager->flush();
@@ -91,41 +103,51 @@ class FilmController extends AbstractController
      */
     public function delImp(Impression $impression, EntityManagerInterface $manager) : Response
     {
-        $film = $impression->getFilm();
+        $user = $this->getUser();
+        if ($user == $impression->getUser()) {
+            $film = $impression->getFilm();
 
-        $manager->remove($impression);
-        $manager->flush();
-
-        return $this->redirectToRoute('showFilm', [
-            "id" => $film->getId()
-        ]);
-    }
-
-    /**
-     * @Route ("/film/imp/edit/{id}", name="editImp")
-     */
-    public function editImp(Impression $impression = null, Request $laRequete, EntityManagerInterface $manager) : Response
-    {
-        $form = $this->createForm(ImpressionType::class, $impression);
-
-        $film = $impression->getFilm();
-
-        $form->handleRequest($laRequete);
-        if ($form->isSubmitted() && $form->isValid())
-        {
-
-            $manager->persist($impression);
+            $manager->remove($impression);
             $manager->flush();
 
             return $this->redirectToRoute('showFilm', [
                 "id" => $film->getId()
             ]);
-        }else {
-            return $this->render('film/imp.html.twig', [
-                'formImp' => $form->createView(),
-                'film' => $film,
-                'isCreate' => false
-            ]);
+        }else{
+            die("Tu n'est pas le créateur de l'impression");
+        }
+    }
+
+    /**
+     * @Route ("/film/imp/edit/{id}", name="editImp")
+     */
+    public function editImp(Impression $impression, Request $laRequete, EntityManagerInterface $manager) : Response
+    {
+        $user = $this->getUser();
+        if ($user == $impression->getUser()) {
+            $form = $this->createForm(ImpressionType::class, $impression);
+
+            $film = $impression->getFilm();
+
+            $form->handleRequest($laRequete);
+            if ($form->isSubmitted() && $form->isValid())
+            {
+
+                $manager->persist($impression);
+                $manager->flush();
+
+                return $this->redirectToRoute('showFilm', [
+                    "id" => $film->getId()
+                ]);
+            }else {
+                return $this->render('film/imp.html.twig', [
+                    'formImp' => $form->createView(),
+                    'film' => $film,
+                    'isCreate' => false
+                ]);
+            }
+        }else{
+            die("Tu n'est pas le créateur de l'impression");
         }
     }
 
@@ -134,6 +156,11 @@ class FilmController extends AbstractController
      */
     public function newImp(Film $film, Request $laRequete, EntityManagerInterface $manager) : Response
     {
+        $user = $this->getUser();
+        if (!$user){
+            die("tu dois etre connecter");
+        }
+
         $impression = new Impression();
 
         $form = $this->createForm(ImpressionType::class, $impression);
@@ -144,6 +171,7 @@ class FilmController extends AbstractController
             $date = new \DateTime();
             $impression->setFilm($film);
             $impression->setCreatedAt($date);
+            $impression->setUser($user);
             $manager->persist($impression);
             $manager->flush();
 
