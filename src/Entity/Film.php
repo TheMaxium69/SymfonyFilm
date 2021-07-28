@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FilmRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,6 +38,16 @@ class Film
      * @ORM\Column(type="datetime")
      */
     private $releaseDate;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Impression::class, mappedBy="film", orphanRemoval=true)
+     */
+    private $impressions;
+
+    public function __construct()
+    {
+        $this->impressions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -86,6 +98,36 @@ class Film
     public function setReleaseDate(\DateTimeInterface $releaseDate): self
     {
         $this->releaseDate = $releaseDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Impression[]
+     */
+    public function getImpressions(): Collection
+    {
+        return $this->impressions;
+    }
+
+    public function addImpression(Impression $impression): self
+    {
+        if (!$this->impressions->contains($impression)) {
+            $this->impressions[] = $impression;
+            $impression->setFilm($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImpression(Impression $impression): self
+    {
+        if ($this->impressions->removeElement($impression)) {
+            // set the owning side to null (unless already changed)
+            if ($impression->getFilm() === $this) {
+                $impression->setFilm(null);
+            }
+        }
 
         return $this;
     }

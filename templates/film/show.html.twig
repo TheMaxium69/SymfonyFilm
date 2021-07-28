@@ -16,4 +16,19 @@
                     <a href="{{ path("delFilm",{id:showFilm.id}) }}" class="btn btn-danger">Supprimer</a>
                 </div>
             </div>
+<hr>
+    <h3>Les impresions</h3>
+    <div class="row">
+        {% for OneImpression in AllImpressions %}
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <p class="card-text">{{ OneImpression.content }}</p>
+                    <p class="card-text">{{ OneImpression.createdAt | date('d M Y') }} </p>
+{#                    <a href="{{ path("delFilm",{id:OneFilm.id}) }}" class="btn btn-danger">Supprimer</a>#}
+{#                    <a href="{{ path("editFilm",{id:OneFilm.id}) }}" class="btn btn-info">Edit</a>#}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
 {% endblock %}

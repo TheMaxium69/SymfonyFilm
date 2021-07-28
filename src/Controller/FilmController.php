@@ -30,7 +30,12 @@ class FilmController extends AbstractController
      */
     public function show(Film $film): Response
     {
+        $impressions = $film->getImpressions();
+
+
+
         return $this->render('film/show.html.twig', [
+            'AllImpressions' => $impressions,
             'showFilm' => $film,
         ]);
     }
