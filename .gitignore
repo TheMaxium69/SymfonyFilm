@@ -1,3 +1,8 @@
+.env
+.env.example
+.env.local
+.env.staging
+.idea/
 
 ###> symfony/framework-bundle ###
 /.env.local
@@ -7,6 +12,7 @@
 /public/bundles/
 /var/
 /vendor/
+
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
@@ -18,3 +24,9 @@
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+*.env
+/.env
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
