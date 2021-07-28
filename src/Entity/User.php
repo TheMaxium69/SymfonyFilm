@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -32,6 +34,22 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Film::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $films;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Impression::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $impressions;
+
+    public function __construct()
+    {
+        $this->films = new ArrayCollection();
+        $this->impressions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -98,5 +116,65 @@ class User implements UserInterface
     public function getUserIdentifier(): string
     {
         return $this->username;
+    }
+
+    /**
+     * @return Collection|Film[]
+     */
+    public function getFilms(): Collection
+    {
+        return $this->films;
+    }
+
+    public function addFilm(Film $film): self
+    {
+        if (!$this->films->contains($film)) {
+            $this->films[] = $film;
+            $film->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFilm(Film $film): self
+    {
+        if ($this->films->removeElement($film)) {
+            // set the owning side to null (unless already changed)
+            if ($film->getUser() === $this) {
+                $film->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Impression[]
+     */
+    public function getImpressions(): Collection
+    {
+        return $this->impressions;
+    }
+
+    public function addImpression(Impression $impression): self
+    {
+        if (!$this->impressions->contains($impression)) {
+            $this->impressions[] = $impression;
+            $impression->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImpression(Impression $impression): self
+    {
+        if ($this->impressions->removeElement($impression)) {
+            // set the owning side to null (unless already changed)
+            if ($impression->getUser() === $this) {
+                $impression->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
