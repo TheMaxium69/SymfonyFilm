@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme formulaire 'bootstrap_5_layout.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+
+    <h1>Form Register</h1>
+
+    {{  form_start(formulaire)  }}
+    {{ form_row(formulaire.username, {'attr': {'placeholder': 'Votre Username'}})  }}
+    {{ form_row(formulaire.email, {'attr': {'placeholder': 'Votre email'}})  }}
+    {{ form_row(formulaire.password, {'attr': {'placeholder': 'Votre mot de passe'}})  }}
+
+    <button type="submit" class="btn btn-success">S'enregistrer</button>
+
+    {{  form_end(formulaire)  }}
+
+
+
+
+{% endblock %}

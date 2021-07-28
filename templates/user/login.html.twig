@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+
+    <div class="container text-white d-block">
+        <h1>CONNEXION</h1>
+        <form class="form-group" method="POST">
+            <div class="mb-3">
+                <label for="username">Utilisateur</label>
+                <input name="_username" id="username" class="form-control" type="text">
+            </div>
+            <div class="mb-3">
+                <label for="password">Mot de passe</label>
+                <input name="_password" class="form-control" type="password">
+            </div>
+            <button type="submit" class="btn btn-success">Se connecter</button>
+        </form>
+    </div>
+
+{% endblock %}
