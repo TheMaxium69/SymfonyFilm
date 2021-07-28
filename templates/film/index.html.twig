@@ -15,6 +15,7 @@
                 <h5 class="card-title">{{ OneFilm.name }}</h5>
                 <p class="card-text">{{ OneFilm.resume }}</p>
                 <p class="card-text">{{ OneFilm.realisateur }}</p>
+                <p class="card-text">{{ OneFilm.category.name }} </p>
                 <p class="card-text">{{ OneFilm.releaseDate | date('d M Y') }} </p>
                 <p class="card-text">{{ OneFilm.user.username }} </p>
                 {% if app.user == OneFilm.user %}

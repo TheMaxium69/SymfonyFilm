@@ -11,6 +11,7 @@
                     <h5 class="card-title">{{ showFilm.name }}</h5>
                     <p class="card-text">{{ showFilm.resume }}</p>
                     <p class="card-text">{{ showFilm.realisateur }}</p>
+                    <p class="card-text">{{ showFilm.category.name }} </p>
                     <p class="card-text">{{ showFilm.releaseDate | date('d M Y') }} </p>
                     <p class="card-text">{{ showFilm.user.username }} </p>
                     {% if app.user == showFilm.user %}
