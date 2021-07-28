@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Tout mes films!{% endblock %}
+{% block title %}Un film{% endblock %}
 
 {% block body %}
     <a href="{{ path("indexFilm") }}" class="btn btn-primary">Retour</a>
@@ -10,6 +10,9 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ showFilm.name }}</h5>
                     <p class="card-text">{{ showFilm.resume }}</p>
+                    <p class="card-text">{{ showFilm.realisateur }}</p>
+                    <p class="card-text">{{ showFilm.releaseDate | date('d M Y') }} </p>
+                    <a href="{{ path("editFilm",{id:showFilm.id}) }}" class="btn btn-info">Edit</a>
                     <a href="{{ path("delFilm",{id:showFilm.id}) }}" class="btn btn-danger">Supprimer</a>
                 </div>
             </div>

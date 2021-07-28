@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Film;
+use App\Form\FilmType;
 use App\Repository\FilmRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -46,33 +48,33 @@ class FilmController extends AbstractController
     }
 
     /**
-     * @Route("/telephone/create/", name="telephoneCreate")
-     * @Route ("/telephone/edit/{id}", name="telephoneEdit")
+     * @Route("/film/create/", name="createFilm")
+     * @Route ("/film/edit/{id}", name="editFilm")
      */
-    public function new(Telephone $telephone = null, Request $laRequete, EntityManagerInterface $manager) : Response
+    public function new(Film $film = null, Request $laRequete, EntityManagerInterface $manager) : Response
     {
         $modeCreate = false;
 
-        if (!$telephone) {
-            $telephone = new Telephone();
+        if (!$film) {
+            $film = new Film();
             $modeCreate = true;
         }
 
-        $form = $this->createForm(TelephoneType::class, $telephone);
+        $form = $this->createForm(FilmType::class, $film);
 
         $form->handleRequest($laRequete);
         if ($form->isSubmitted() && $form->isValid())
         {
 
-            $manager->persist($telephone);
+            $manager->persist($film);
             $manager->flush();
 
-            return $this->redirectToRoute('telephoneShow', [
-                "id" => $telephone->getId()
+            return $this->redirectToRoute('showFilm', [
+                "id" => $film->getId()
             ]);
         }else {
-            return $this->render('telephone/form.html.twig', [
-                'formTelephone' => $form->createView(),
+            return $this->render('film/form.html.twig', [
+                'formFilm' => $form->createView(),
                 'isCreate' => $modeCreate
             ]);
         }

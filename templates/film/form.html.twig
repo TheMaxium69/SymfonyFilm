@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formulaire Telephone{% endblock %}
+
+{% form_theme formFilm 'bootstrap_5_layout.html.twig' %}
+
+{% block body %}
+
+    {% if isCreate %}
+        <h1>Form Create</h1>
+    {% else %}
+        <h1>Form Edit</h1>
+    {% endif %}
+
+    {{ form_start(formFilm) }}
+
+    {{ form_row(formFilm.name) }}
+    {{ form_row(formFilm.resume) }}
+    {{ form_row(formFilm.realisateur) }}
+    {{ form_row(formFilm.releaseDate) }}
+
+
+    {% if isCreate %}
+        <input class="btn btn-success" type="submit" value="Créer">
+    {% else %}
+        <input class="btn btn-success" type="submit" value="Edit">
+    {% endif %}
+
+    {{ form_end(formFilm) }}
+
+    <hr><a href="{{ path('indexFilm') }}" class="btn btn-primary">Retour</a>
+
+{% endblock %}
