@@ -48,7 +48,8 @@ class FilmController extends AbstractController
     public function del(Film $film, EntityManagerInterface $manager) : Response
     {
         $user = $this->getUser();
-        if ($user == $film->getUser()) {
+        $userRole = $user->getRoles();
+        if ($user == $film->getUser() || $userRole['0'] == "ROLE_ADMIN" ) {
             $manager->remove($film);
             $manager->flush();
 
@@ -65,6 +66,7 @@ class FilmController extends AbstractController
     public function new(Film $film = null, Request $laRequete, EntityManagerInterface $manager) : Response
     {
         $user = $this->getUser();
+        $userRole = $user->getRoles();
         if (!$user){
             die("tu dois etre connecter");
         }
@@ -106,7 +108,8 @@ class FilmController extends AbstractController
     public function delImp(Impression $impression, EntityManagerInterface $manager) : Response
     {
         $user = $this->getUser();
-        if ($user == $impression->getUser()) {
+        $userRole = $user->getRoles();
+        if ($user == $impression->getUser() || $userRole['0'] == "ROLE_ADMIN") {
             $film = $impression->getFilm();
 
             $manager->remove($impression);
@@ -126,7 +129,8 @@ class FilmController extends AbstractController
     public function editImp(Impression $impression, Request $laRequete, EntityManagerInterface $manager) : Response
     {
         $user = $this->getUser();
-        if ($user == $impression->getUser()) {
+        $userRole = $user->getRoles();
+        if ($user == $impression->getUser() || $userRole['0'] == "ROLE_ADMIN") {
             $form = $this->createForm(ImpressionType::class, $impression);
 
             $film = $impression->getFilm();

@@ -21,6 +21,10 @@
                     {% if app.user == showFilm.user %}
                     <a href="{{ path("editFilm",{id:showFilm.id}) }}" class="btn btn-info">Edit</a>
                     <a href="{{ path("delFilm",{id:showFilm.id}) }}" class="btn btn-danger">Supprimer</a>
+                    {% elseif app.user %}
+                        {% if app.user.roles[0] == "ROLE_ADMIN" %}
+                        <a href="{{ path("delFilm",{id:showFilm.id}) }}" class="btn btn-danger">Supprimer</a>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>
@@ -43,6 +47,10 @@
                     {% if app.user == OneImpression.user %}
                     <a href="{{ path("delImp",{id:OneImpression.id}) }}" class="btn btn-danger">Supprimer</a>
                     <a href="{{ path("editImp",{id:OneImpression.id}) }}" class="btn btn-info">Edit</a>
+                    {% elseif app.user %}
+                        {% if app.user.roles[0] == "ROLE_ADMIN" %}
+                        <a href="{{ path("delImp",{id:OneImpression.id}) }}" class="btn btn-danger">Supprimer</a>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>
